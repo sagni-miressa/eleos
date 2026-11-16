@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Eleos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SCREEN 1: WELCOME & LOGIN PAGE -->
+  <section id="welcome-screen" class="screen active">
+    <div class="overlay"></div>
+    <div class="welcome-container">
+      <div class="badge">✝ Worship & Fellowship Portal</div>
+      <h1>Welcome to <span>Eleos</span></h1>
+      <p class="subtitle">
+        Sign in below to confirm your team participation and share your feedback with the Eleos ministry.
+      </p>
+
+      <form id="login-form" class="card dark-card">
+        <h2>Member Sign In</h2>
+
+        <div class="input-group">
+          <label for="fullName">Full Name <span class="req">*</span></label>
+          <input type="text" id="fullName" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="input-group">
+          <label for="fatherName">Father's Name <span class="req">*</span></label>
+          <input type="text" id="fatherName" placeholder="Enter your father's name" required />
+        </div>
+
+        <div class="input-group">
+          <label for="phoneNumber">Phone Number <span class="req">*</span></label>
+          <input type="tel" id="phoneNumber" placeholder="e.g. +251 9XX XXX XXX" required />
+        </div>
+
+        <button type="submit" class="btn-primary">Continue to Form →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: GOOGLE-FORMS-STYLE QUESTIONNAIRE -->
+  <section id="form-screen" class="screen">
+    <div class="form-wrapper">
+      <!-- Form Header Card -->
+      <div class="form-header-card">
+        <div class="top-accent"></div>
+        <div class="header-content">
+          <div>
+            <h2>Eleos Team Participation Form</h2>
+            <p id="greeting-text" class="user-banner"></p>
+          </div>
+          <button type="button" id="logout-btn" class="btn-outline">Change User</button>
+        </div>
+      </div>
+
+      <form id="eleos-form">
+        <!-- Pre-filled / Confirmed Member Details -->
+        <div class="form-card">
+          <h3>1. Member Information</h3>
+          <div class="grid-two">
+            <div class="input-group">
+              <label for="confirmName">Your Name</label>
+              <input type="text" id="confirmName" required />
+            </div>
+            <div class="input-group">
+              <label for="confirmFather">Father's Name</label>
+              <input type="text" id="confirmFather" required />
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="confirmPhone">Phone Number</label>
+            <input type="tel" id="confirmPhone" required />
+          </div>
+        </div>
+
+        <!-- Optional Team Group Question -->
+        <div class="form-card">
+          <h3>2. Which team group are you participating in? <span class="optional-tag">(Optional)</span></h3>
+          <p class="helper-text">Select an option below to answer follow-up details, or skip if not applicable.</p>
+
+          <div class="radio-group">
+            <!-- OPTION A: ELEOS -->
+            <label class="radio-option" for="team-eleos">
+              <input type="radio" name="teamGroup" id="team-eleos" value="Eleos" />
+              <span class="radio-custom"></span>
+              <span class="radio-label">Eleos</span>
+            </label>
+
+            <!-- CONDITIONAL SUB-SECTION FOR ELEOS -->
+            <div id="eleos-sub-box" class="conditional-box hidden">
+              <p class="sub-question">How often do you participate in the <strong>Eleos</strong> team?</p>
+
+              <label class="radio-option" for="freq-always">
+                <input type="radio" name="eleosFrequency" id="freq-always" value="Always" />
+                <span class="radio-custom"></span>
+                <span class="radio-label">Participating always</span>
+              </label>
+
+              <label class="radio-option" for="freq-sometimes">
+                <input type="radio" name="eleosFrequency" id="freq-sometimes" value="Sometimes" />
+                <span class="radio-custom"></span>
+                <span class="radio-label">Sometimes</span>
+              </label>
+
+              <!-- REASON IF SOMETIMES -->
+              <div id="sometimes-reason-box" class="nested-reason hidden">
+                <label for="sometimesReason">Why are you not always participating under the Eleos team? <span class="req">*</span></label>
+                <textarea id="sometimesReason" rows="3" placeholder="Write your reason here..."></textarea>
+              </div>
+            </div>
+
+            <!-- OPTION B: OTHER TEAMS -->
+            <label class="radio-option" for="team-other">
+              <input type="radio" name="teamGroup" id="team-other" value="Other teams" />
+              <span class="radio-custom"></span>
+              <span class="radio-label">Other teams</span>
+            </label>
+
+            <!-- CONDITIONAL SUB-SECTION FOR OTHER TEAMS -->
+            <div id="other-team-sub-box" class="conditional-box hidden">
+              <label for="otherTeamReason">Why are you not participating in the Eleos team / program? <span class="req">*</span></label>
+              <textarea id="otherTeamReason" rows="3" placeholder="Please share why you are not attending the Eleos program..."></textarea>
+            </div>
+          </div>
+
+          <button type="button" id="clear-selection-btn" class="btn-text hidden">Clear selection</button>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Submit Response</button>
+          <button type="button" id="view-responses-btn" class="btn-secondary">View Saved Responses (<span id="response-count">0</span>)</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: SUBMISSION SUCCESS & SAVED RESPONSES -->
+  <section id="success-screen" class="screen">
+    <div class="form-wrapper">
+      <div class="form-header-card">
+        <div class="top-accent"></div>
+        <div class="header-content">
+          <div>
+            <h2>Thank You! Your Response Has Been Recorded</h2>
+            <p class="user-banner">Eleos Ministry Participation Portal</p>
+          </div>
+          <button type="button" id="submit-another-btn" class="btn-primary">Submit Another Response</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="responses-header">
+          <h3>Recorded Submissions</h3>
+          <button type="button" id="export-csv-btn" class="btn-outline">Export CSV</button>
+        </div>
+        <div id="responses-list" class="responses-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
