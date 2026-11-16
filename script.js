@@ -1,4 +1,6 @@
-// DOM Elements
+// PASTE YOUR FORMSPREE URL HERE:
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xgakajjz';
+
 const welcomeScreen = document.getElementById('welcome-screen');
 const formScreen = document.getElementById('form-screen');
 const successScreen = document.getElementById('success-screen');
@@ -6,18 +8,15 @@ const successScreen = document.getElementById('success-screen');
 const loginForm = document.getElementById('login-form');
 const eleosForm = document.getElementById('eleos-form');
 
-// Login Inputs
 const fullNameInput = document.getElementById('fullName');
 const fatherNameInput = document.getElementById('fatherName');
 const phoneNumberInput = document.getElementById('phoneNumber');
 
-// Form Confirmation Inputs
 const confirmNameInput = document.getElementById('confirmName');
 const confirmFatherInput = document.getElementById('confirmFather');
 const confirmPhoneInput = document.getElementById('confirmPhone');
 const greetingText = document.getElementById('greeting-text');
 
-// Conditional Logic Elements
 const teamEleosRadio = document.getElementById('team-eleos');
 const teamOtherRadio = document.getElementById('team-other');
 const eleosSubBox = document.getElementById('eleos-sub-box');
@@ -30,7 +29,6 @@ const sometimesReasonInput = document.getElementById('sometimesReason');
 const otherTeamReasonInput = document.getElementById('otherTeamReason');
 const clearSelectionBtn = document.getElementById('clear-selection-btn');
 
-// Responses Storage
 let responses = JSON.parse(localStorage.getItem('eleos_responses') || '[]');
 const responseCountSpan = document.getElementById('response-count');
 responseCountSpan.textContent = responses.length;
@@ -41,30 +39,21 @@ function showScreen(screenToShow) {
   window.scrollTo(0, 0);
 }
 
-// Step 1: Login Handler
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  const name = fullNameInput.value.trim();
-  const father = fatherNameInput.value.trim();
-  const phone = phoneNumberInput.value.trim();
-
-  confirmNameInput.value = name;
-  confirmFatherInput.value = father;
-  confirmPhoneInput.value = phone;
-  greetingText.textContent = `Signed in as ${name} ${father} (${phone})`;
-
+  confirmNameInput.value = fullNameInput.value.trim();
+  confirmFatherInput.value = fatherNameInput.value.trim();
+  confirmPhoneInput.value = phoneNumberInput.value.trim();
+  greetingText.textContent = `Signed in as ${confirmNameInput.value} ${confirmFatherInput.value} (${confirmPhoneInput.value})`;
   showScreen(formScreen);
 });
 
-// Change User / Back to Welcome Page
 document.getElementById('logout-btn').addEventListener('click', () => {
   showScreen(welcomeScreen);
 });
 
-// Conditional Branching: Team Selection
 function updateTeamBranching() {
   clearSelectionBtn.classList.remove('hidden');
-
   if (teamEleosRadio.checked) {
     eleosSubBox.classList.remove('hidden');
     otherTeamSubBox.classList.add('hidden');
@@ -73,7 +62,6 @@ function updateTeamBranching() {
   } else if (teamOtherRadio.checked) {
     otherTeamSubBox.classList.remove('hidden');
     otherTeamReasonInput.required = true;
-
     eleosSubBox.classList.add('hidden');
     sometimesReasonBox.classList.add('hidden');
     sometimesReasonInput.required = false;
@@ -86,7 +74,6 @@ function updateTeamBranching() {
 teamEleosRadio.addEventListener('change', updateTeamBranching);
 teamOtherRadio.addEventListener('change', updateTeamBranching);
 
-// Conditional Branching: Eleos Frequency
 function updateFrequencyBranching() {
   if (freqSometimesRadio.checked) {
     sometimesReasonBox.classList.remove('hidden');
@@ -101,17 +88,14 @@ function updateFrequencyBranching() {
 freqAlwaysRadio.addEventListener('change', updateFrequencyBranching);
 freqSometimesRadio.addEventListener('change', updateFrequencyBranching);
 
-// Clear Optional Team Selection
 clearSelectionBtn.addEventListener('click', () => {
   teamEleosRadio.checked = false;
   teamOtherRadio.checked = false;
   freqAlwaysRadio.checked = false;
   freqSometimesRadio.checked = false;
-
   eleosSubBox.classList.add('hidden');
   otherTeamSubBox.classList.add('hidden');
   sometimesReasonBox.classList.add('hidden');
-
   sometimesReasonInput.required = false;
   otherTeamReasonInput.required = false;
   sometimesReasonInput.value = '';
@@ -119,9 +103,12 @@ clearSelectionBtn.addEventListener('click', () => {
   clearSelectionBtn.classList.add('hidden');
 });
 
-// Step 2: Submit Form
-eleosForm.addEventListener('submit', (e) => {
+// Submit to Formspree Cloud + Local Backup
+eleosForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const submitBtn = eleosForm.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Submitting...';
 
   let selectedTeam = 'Skipped (Optional)';
   let participationFrequency = '—';
@@ -152,19 +139,33 @@ eleosForm.addEventListener('submit', (e) => {
     submittedAt: new Date().toLocaleString()
   };
 
-  responses.unshift(entry);
-  localStorage.setItem('eleos_responses', JSON.stringify(responses));
-  responseCountSpan.textContent = responses.length;
+  try {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(entry)
+    });
 
-  renderResponses();
-  showScreen(successScreen);
+    if (!res.ok) throw new Error('Network error');
+
+    responses.unshift(entry);
+    localStorage.setItem('eleos_responses', JSON.stringify(responses));
+    responseCountSpan.textContent = responses.length;
+
+    renderResponses();
+    showScreen(successScreen);
+  } catch (err) {
+    alert('Could not send your response. Please check your internet connection and try again.');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Response';
+  }
 });
 
-// Render Saved Responses
 function renderResponses() {
   const list = document.getElementById('responses-list');
   if (responses.length === 0) {
-    list.innerHTML = '<p style="color:#5f6368;">No responses recorded yet.</p>';
+    list.innerHTML = '<p style="color:#5f6368;">No responses recorded on this device yet.</p>';
     return;
   }
 
@@ -188,7 +189,6 @@ document.getElementById('submit-another-btn').addEventListener('click', () => {
   showScreen(formScreen);
 });
 
-// Export CSV for Excel / Google Sheets
 document.getElementById('export-csv-btn').addEventListener('click', () => {
   if (responses.length === 0) return;
   const headers = ['Full Name', 'Father Name', 'Phone', 'Team', 'Frequency', 'Reason', 'Submitted At'];
