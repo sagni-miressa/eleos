@@ -3,7 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Eleos</title>
+  <title>Welcome to Eleos — Worship & Fellowship Portal</title>
+  <meta name="description" content="Sign in below to confirm your choir & worship participation with the Eleos ministry." />
+
+  <!-- Open Graph / Social Link Preview Card (Telegram, WhatsApp, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Eleos Ministry" />
+  <meta property="og:title" content="Welcome to Eleos — Worship & Fellowship Portal" />
+  <meta property="og:description" content="Sign in below to confirm your choir & worship participation with the Eleos ministry." />
+  <meta property="og:url" content="https://eleos1111dnjisjn.netlify.app/" />
+  <meta property="og:image" content="https://eleos1111dnjisjn.netlify.app/preview.png" />
+
+  <!-- Twitter / Large Card Preview -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Welcome to Eleos — Worship & Fellowship Portal" />
+  <meta name="twitter:description" content="Sign in below to confirm your choir & worship participation with the Eleos ministry." />
+  <meta name="twitter:image" content="https://eleos1111dnjisjn.netlify.app/preview.png" />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -117,6 +133,32 @@
           <div class="input-group" style="margin-bottom: 0;">
             <label for="tgUsername">Enter your Telegram username</label>
             <input type="text" id="tgUsername" placeholder="@username" required />
+          </div>
+        </div>
+
+        <!-- 3. Batch Selection -->
+        <div class="form-card">
+          <h3>3. Which batch are you? <span class="req">*</span></h3>
+          <div class="radio-group">
+            <label class="radio-option" for="batch-2">
+              <input type="radio" name="userBatch" id="batch-2" value="Second batch" required />
+              <span class="radio-label">Second batch</span>
+            </label>
+
+            <label class="radio-option" for="batch-3">
+              <input type="radio" name="userBatch" id="batch-3" value="Third batch" required />
+              <span class="radio-label">Third batch</span>
+            </label>
+
+            <label class="radio-option" for="batch-4">
+              <input type="radio" name="userBatch" id="batch-4" value="Fourth batch" required />
+              <span class="radio-label">Fourth batch</span>
+            </label>
+
+            <label class="radio-option" for="batch-5">
+              <input type="radio" name="userBatch" id="batch-5" value="Fifth batch" required />
+              <span class="radio-label">Fifth batch</span>
+            </label>
           </div>
         </div>
 

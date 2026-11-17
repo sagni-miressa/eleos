@@ -97,6 +97,7 @@ function resetFormChoices() {
   optChoirRadio.checked = false;
   optBothRadio.checked = false;
   tgUsernameInput.value = '';
+  document.querySelectorAll('input[name="userBatch"]').forEach(r => r.checked = false);
   updateParticipationBranching();
 }
 
@@ -124,6 +125,9 @@ eleosForm.addEventListener('submit', async (e) => {
     tg = '@' + tg;
   }
 
+  const selectedBatchEl = document.querySelector('input[name="userBatch"]:checked');
+  const batch = selectedBatchEl ? selectedBatchEl.value : '—';
+
   const entry = {
     fullName: confirmNameInput.value.trim(),
     fatherName: confirmFatherInput.value.trim(),
@@ -132,6 +136,7 @@ eleosForm.addEventListener('submit', async (e) => {
     experience: experience,
     vocalTraining: vocalTraining,
     telegramUsername: tg,
+    batch: batch,
     submittedAt: new Date().toLocaleString()
   };
 
@@ -168,7 +173,7 @@ function renderResponses() {
   list.innerHTML = responses.map((r, i) => `
     <div class="response-item">
       <strong>#${responses.length - i} — ${r.fullName} ${r.fatherName}</strong> (${r.phone})<br/>
-      <strong>Telegram:</strong> ${r.telegramUsername || '—'}<br/>
+      <strong>Batch:</strong> ${r.batch || '—'} | <strong>Telegram:</strong> ${r.telegramUsername || '—'}<br/>
       <strong>Participation:</strong> ${r.participation}<br/>
       <strong>Experience:</strong> ${r.experience} | <strong>Vocal Training:</strong> ${r.vocalTraining}<br/>
       <small style="color:#777;">Submitted: ${r.submittedAt}</small>
@@ -188,9 +193,9 @@ document.getElementById('submit-another-btn').addEventListener('click', () => {
 
 document.getElementById('export-csv-btn').addEventListener('click', () => {
   if (responses.length === 0) return;
-  const headers = ['Full Name', 'Father Name', 'Phone', 'Telegram Username', 'Participation', 'Experience', 'Vocal Training', 'Submitted At'];
+  const headers = ['Full Name', 'Father Name', 'Phone', 'Batch', 'Telegram Username', 'Participation', 'Experience', 'Vocal Training', 'Submitted At'];
   const rows = responses.map(r => [
-    r.fullName, r.fatherName, r.phone, r.telegramUsername, r.participation, r.experience, r.vocalTraining, r.submittedAt
+    r.fullName, r.fatherName, r.phone, r.batch, r.telegramUsername, r.participation, r.experience, r.vocalTraining, r.submittedAt
   ].map(val => `"${String(val || '').replace(/"/g, '""')}"`).join(','));
 
   const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows].join('\n');
