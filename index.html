@@ -15,7 +15,7 @@
       <div class="badge">✝ Worship & Fellowship Portal</div>
       <h1>Welcome to <span>Eleos</span></h1>
       <p class="subtitle">
-        Sign in below to confirm your team  participation and share your feedback with the Eleos ministry.
+        Sign in below to confirm your team participation and share your feedback with the Eleos ministry.
       </p>
 
       <form id="login-form" class="card dark-card">
@@ -41,7 +41,7 @@
     </div>
   </section>
 
-  <!-- SCREEN 2: GOOGLE-FORMS-STYLE QUESTIONNAIRE -->
+  <!-- SCREEN 2: QUESTIONNAIRE -->
   <section id="form-screen" class="screen">
     <div class="form-wrapper">
       <!-- Form Header Card -->
@@ -49,7 +49,7 @@
         <div class="top-accent"></div>
         <div class="header-content">
           <div>
-            <h2>Eleos Team Participation Form</h2>
+            <h2>Eleos Ministry Participation Form</h2>
             <p id="greeting-text" class="user-banner"></p>
           </div>
           <button type="button" id="logout-btn" class="btn-outline">Change User</button>
@@ -57,76 +57,75 @@
       </div>
 
       <form id="eleos-form">
-        <!-- Pre-filled / Confirmed Member Details -->
+        <!-- Hidden fields carrying login info to Formspree -->
+        <input type="hidden" id="confirmName" />
+        <input type="hidden" id="confirmFather" />
+        <input type="hidden" id="confirmPhone" />
+
+        <!-- 1. Participation Options -->
         <div class="form-card">
-          <h3>1. Member Information</h3>
-          <div class="grid-two">
-            <div class="input-group">
-              <label for="confirmName">Your Name</label>
-              <input type="text" id="confirmName" required />
+          <h3>1. Do you want to participate in? <span class="req">*</span></h3>
+
+          <div class="radio-group">
+            <!-- OPTION A: IN CHOIR -->
+            <label class="radio-option" for="opt-choir">
+              <input type="radio" name="participationChoice" id="opt-choir" value="In choir" required />
+              <span class="radio-label">In choir</span>
+            </label>
+
+            <!-- OPTION B: BOTH CHOIR AND WORSHIP -->
+            <label class="radio-option" for="opt-both">
+              <input type="radio" name="participationChoice" id="opt-both" value="Both choir and worship (I want to participate in worship)" required />
+              <span class="radio-label">Both choir and worship <span class="bracket-note">(I want to participate in worship)</span></span>
+            </label>
+
+            <!-- CONDITIONAL SUB-BOX FOR BOTH CHOIR AND WORSHIP -->
+            <div id="both-sub-box" class="conditional-box hidden">
+              <p class="sub-question">Do you have experience before, or do you need more time for experience? <span class="req">*</span></p>
+
+              <label class="radio-option" for="exp-yes">
+                <input type="radio" name="experienceStatus" id="exp-yes" value="Had experience before" />
+                <span class="radio-label">I had experience before</span>
+              </label>
+
+              <label class="radio-option" for="exp-need-time">
+                <input type="radio" name="experienceStatus" id="exp-need-time" value="Needs more time for experience" />
+                <span class="radio-label">I need more time for experience</span>
+              </label>
+
+              <!-- VOCAL TRAINING QUESTION (SHOWN UNDER BOTH EXPERIENCE OPTIONS) -->
+              <div id="vocal-training-box" class="nested-reason hidden">
+                <p class="sub-question">Are you participating in vocal training? <span class="req">*</span></p>
+
+                <label class="radio-option" for="vocal-yes">
+                  <input type="radio" name="vocalTraining" id="vocal-yes" value="Yes" />
+                  <span class="radio-label">Yes</span>
+                </label>
+
+                <label class="radio-option" for="vocal-no">
+                  <input type="radio" name="vocalTraining" id="vocal-no" value="No" />
+                  <span class="radio-label">No</span>
+                </label>
+              </div>
             </div>
-            <div class="input-group">
-              <label for="confirmFather">Father's Name</label>
-              <input type="text" id="confirmFather" required />
-            </div>
-          </div>
-          <div class="input-group">
-            <label for="confirmPhone">Phone Number</label>
-            <input type="tel" id="confirmPhone" required />
           </div>
         </div>
 
-        <!-- Optional Team Group Question -->
+        <!-- 2. Telegram Username -->
         <div class="form-card">
-          <h3>2. Which team group are you participating in? <span class="optional-tag">(Optional)</span></h3>
-          <p class="helper-text">Select an option below to answer follow-up details, or skip if not applicable.</p>
-
-          <div class="radio-group">
-            <!-- OPTION A: ELEOS -->
-            <label class="radio-option" for="team-eleos">
-              <input type="radio" name="teamGroup" id="team-eleos" value="Eleos" />
-              <span class="radio-custom"></span>
-              <span class="radio-label">Eleos</span>
-            </label>
-
-            <!-- CONDITIONAL SUB-SECTION FOR ELEOS -->
-            <div id="eleos-sub-box" class="conditional-box hidden">
-              <p class="sub-question">How often do you participate in the <strong>Eleos</strong> team?</p>
-
-              <label class="radio-option" for="freq-always">
-                <input type="radio" name="eleosFrequency" id="freq-always" value="Always" />
-                <span class="radio-custom"></span>
-                <span class="radio-label">Participating always</span>
-              </label>
-
-              <label class="radio-option" for="freq-sometimes">
-                <input type="radio" name="eleosFrequency" id="freq-sometimes" value="Sometimes" />
-                <span class="radio-custom"></span>
-                <span class="radio-label">Sometimes</span>
-              </label>
-
-              <!-- REASON IF SOMETIMES -->
-              <div id="sometimes-reason-box" class="nested-reason hidden">
-                <label for="sometimesReason">Why are you not always participating under the Eleos team? <span class="req">*</span></label>
-                <textarea id="sometimesReason" rows="3" placeholder="Write your reason here..."></textarea>
-              </div>
-            </div>
-
-            <!-- OPTION B: OTHER TEAMS -->
-            <label class="radio-option" for="team-other">
-              <input type="radio" name="teamGroup" id="team-other" value="Other teams" />
-              <span class="radio-custom"></span>
-              <span class="radio-label">Other teams</span>
-            </label>
-
-            <!-- CONDITIONAL SUB-SECTION FOR OTHER TEAMS -->
-            <div id="other-team-sub-box" class="conditional-box hidden">
-              <label for="otherTeamReason">Why are you not participating in the Eleos team / program? <span class="req">*</span></label>
-              <textarea id="otherTeamReason" rows="3" placeholder="Please share why you are not attending the Eleos program..."></textarea>
-            </div>
+          <h3>2. Telegram Username <span class="req">*</span></h3>
+          <div class="input-group" style="margin-bottom: 0;">
+            <label for="tgUsername">Enter your Telegram username</label>
+            <input type="text" id="tgUsername" placeholder="@username" required />
           </div>
+        </div>
 
-          <button type="button" id="clear-selection-btn" class="btn-text hidden">Clear selection</button>
+        <!-- Caution Box -->
+        <div class="caution-banner" role="alert">
+          <span class="caution-icon">⚠️</span>
+          <div>
+            <strong>Caution:</strong> You have to participate in vocal training.
+          </div>
         </div>
 
         <div class="form-actions">
